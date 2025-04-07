@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant browser as browser
+  participant server as server
+
+  browser ->>+ server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_ajax
+  browser -->>server: { "content": "User's new note", "date": "current date" }
+  server -->>- browser: 200 ok
+  Note right of browser: JavaScript updates DOM to display the new note
+  browser ->>+ server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+  server -->>- browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ..., { "content": "User's new note", "date": "current date" }]
+  Note right of browser: Javascript updates DOM again to display the updated data.
+
+
