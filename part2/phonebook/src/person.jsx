@@ -1,4 +1,8 @@
-const Person = ({name,number}) => {
-    return <div>{name} {number}</div>
+const Person = ({name,number,deleteName}) => {
+    return (
+    <div>{name} {number}
+     <button onClick = {deleteName}>delete</button>
+    </div>
+    )
 }
 export default Person
