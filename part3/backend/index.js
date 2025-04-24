@@ -4,6 +4,13 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
+const generateId = () => {
+  const maxId = persons.length > 0
+  ? Math.max(...persons.map(n => Number(n.id)))
+  : 0
+  return String(maxId + 1)
+}
+
 let persons = [
     { 
       "id": "1",
@@ -63,10 +70,37 @@ let persons = [
 
     response.status(204).end()
   })
-
+/*
+3.4
   app.post('/api/persons', (request, response) => {
     const person = request.body
     console.log(person)
+    response.json(person)
+  })
+*/
+
+  app.post('/api/persons', (request,response) => {
+    const body = request.body
+    if (!body.name || !body.number) {
+      return response.status(400).json({
+        error: 'content missing'
+      })
+    }
+
+    const nameExists = persons.some((person) => person.name === body.name);
+    if (nameExists) {
+      return response.status(409).json({
+        error: 'name must be unique',
+      });
+    }
+
+    const person = {
+      id: generateId(),
+      name: body.name,
+      number: body.number || false
+    }
+
+    persons = persons.concat(person)
     response.json(person)
   })
 
